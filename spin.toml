@@ -1,0 +1,37 @@
+spin_manifest_version = 2
+
+[application]
+authors = ["Thorsten Hans <thans@akamai.com>"]
+description = ""
+name = "jev-model-router"
+version = "0.1.0"
+
+[variables]
+open_router_api_key = { required = true, secret = true }
+open_router_endpoint = { default = "https://openrouter.ai" }
+models = { default = "gpt-4:latest,llama3.2:1b,qwen2.5-coder:7b,deepseek-v4-flash:cloud,deepseek-v3.2:cloud,qwen3.5:4b" }
+fallback_model = { default = "gpt-4:latest" }
+ollama_endpoint = { required = true }
+ollama_api_key = { required = true, secret = true }
+
+[[trigger.http]]
+route = "/..."
+component = "jev-model-router-ts"
+
+[component.jev-model-router-ts]
+source = "dist/jev-model-router-ts.wasm"
+exclude_files = ["**/node_modules"]
+allowed_outbound_hosts = ["{{ open_router_endpoint }}", "{{ ollama_endpoint }}"]
+
+[component.jev-model-router-ts.variables]
+open_router_api_key = "{{ open_router_api_key }}"
+open_router_endpoint = "{{ open_router_endpoint }}"
+models = "{{ models }}"
+fallback_model = "{{ fallback_model }}"
+ollama_endpoint = "{{ ollama_endpoint }}"
+ollama_api_key = "{{ ollama_api_key }}"
+
+[component.jev-model-router-ts.build]
+command = ["npm install", "npm run build"]
+watch = ["src/**/*.ts"]
+
