@@ -1,12 +1,22 @@
 import * as variables from "@spinframework/spin-variables";
 
 export interface Config {
-  openRouterApiKey: string;
-  openRouterEndpoint: string;
-  models: string[];
-  fallbackModel: string;
-  ollamaEndpoint: string;
-  ollamaApiKey: string;
+  decisionModel: DecisionModel;
+  llm: LargeLanguageModels;
+
+}
+
+export interface DecisionModel {
+  endpoint: string;
+  apiKey: string;
+  name: string
+}
+
+export interface LargeLanguageModels {
+  endpoint: string;
+  apiKey: string;
+  fallbackName: string;
+  names: string[]
 }
 
 function requireVariable(key: string): string {
@@ -18,22 +28,29 @@ function requireVariable(key: string): string {
 }
 
 export function loadConfig(): Config {
-  const openRouterApiKey = requireVariable('open_router_api_key');
-  const openRouterEndpoint = requireVariable('open_router_endpoint');
-  const models = requireVariable('models')
+  const decisionModelApiKey = requireVariable('decition_model_api_key');
+  const decisionModelEndpoint = requireVariable('decision_model_endpoint');
+  const decisionModelName = requireVariable('decision_model_name');
+  const llmNames = requireVariable('llm_names')
     .split(',')
     .map((model) => model.trim())
     .filter((model) => model.length > 0);
-  const fallbackModel = requireVariable('fallback_model');
-  const ollamaEndpoint = requireVariable('ollama_endpoint');
-  const ollamaApiKey = requireVariable('ollama_api_key');
+  const llmFallbackModel = requireVariable('llm_fallback_name');
+  const llmEndpoint = requireVariable('llm_endpoint');
+  const llmApiKey = requireVariable('llm_api_key');
 
   return {
-    openRouterApiKey,
-    openRouterEndpoint,
-    models,
-    fallbackModel,
-    ollamaEndpoint,
-    ollamaApiKey,
+    decisionModel: {
+      endpoint: decisionModelEndpoint,
+      apiKey: decisionModelApiKey,
+      name: decisionModelName
+    } as DecisionModel,
+    llm: {
+      endpoint: llmEndpoint,
+      apiKey: llmApiKey,
+      fallbackName: llmFallbackModel,
+      names: llmNames
+    } as LargeLanguageModels
+
   };
 }

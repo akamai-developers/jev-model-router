@@ -17,14 +17,17 @@ It exposes a single HTTP endpoint (`POST /ask`). For each incoming prompt it ask
 
 The application is configured through Spin variables in [`spin.toml`](./spin.toml):
 
-| Variable               | Description                                               |
-|------------------------|-----------------------------------------------------------|
-| `open_router_api_key`  | API key used to call Jev through OpenRouter (secret)      |
-| `open_router_endpoint` | OpenRouter base URL                                       |
-| `ollama_endpoint`      | Base URL of your Ollama instance                          |
-| `ollama_api_key`       | API key sent to Ollama (secret)                           |
-| `models`               | Comma-separated list of models Jev may route to           |
-| `fallback_model`       | Model used when Jev cannot make a decision                |
+| Variable | Description |
+| -------- | ----------- |
+| `decition_model_api_key` | API key used to call Jev through OpenRouter (secret) |
+| `decision_model_endpoint` | OpenRouter base URL (default: `https://openrouter.ai`) |
+| `decision_model_name` | Decision Model name (default: `typesafe/jev-1.13`) |
+| `llm_endpoint` | Base URL of your Ollama instance |
+| `llm_api_key` | API key sent to Ollama (secret) |
+| `llm_names` | Comma-separated list of models Jev may route to (default: see below table) |
+| `llm_fallback_name` | Model used when Jev cannot make a decision (default: `gpt-4:latest`) |
+
+The default value for `llm_names` is `gpt-4:latest,llama3.2:1b,qwen2.5-coder:7b,deepseek-v4-flash:cloud,deepseek-v3.2:cloud,qwen3.5:4b`
 
 > **Note:** The model names in `models` are hard-coded for demonstration purposes. Every name must be served by your Ollama instance.
 
@@ -34,9 +37,9 @@ Build and start the component locally, supplying the required secrets:
 
 ```bash
 spin up --build \
-  --variable open_router_api_key="{your_openrouter_api_key}" \
-  --variable ollama_endpoint="https://my-ollama:8080" \
-  --variable ollama_api_key="{your_ollama_api_key}"
+  --variable decition_model_api_key="{your_openrouter_api_key}" \
+  --variable llm_endpoint="https://my-ollama:8080" \
+  --variable llm_api_key="{your_ollama_api_key}"
 ```
 
 Spin compiles the TypeScript to WebAssembly and starts listening on port `3000`. Send it a prompt from another terminal:
@@ -44,6 +47,14 @@ Spin compiles the TypeScript to WebAssembly and starts listening on port `3000`.
 ```bash
 curl -iX POST \
   -d '{ "prompt": "Write a Python function to reverse a linked list" }' \
+  -H 'content-type:application/json' \
+  http://localhost:3000/ask
+```
+
+
+```bash
+curl -iX POST \
+  -d '{ "prompt": "Write a poem about WebAssembly in priate style" }' \
   -H 'content-type:application/json' \
   http://localhost:3000/ask
 ```

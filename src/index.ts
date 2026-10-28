@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { fire } from 'hono/service-worker';
 import type { Context } from 'hono';
 import { logger } from 'hono/logger';
-import { loadConfig } from './config';
+import { Config, loadConfig } from './config';
 import { decideWhichModelToUse } from './decision';
 import { askOllama } from './ollama';
 
@@ -10,14 +10,18 @@ interface RequestModel {
   prompt: string;
 }
 
-
 const app = new Hono();
 
-// Logging to stdout via built-in middleware
 app.use(logger());
 
 app.post('/ask', async (c: Context) => {
-  const cfg = loadConfig();
+  let cfg: Config;
+  try{
+    cfg = loadConfig();
+  } catch {
+    c.status(500);
+    return c.text("Invalid Application Configuration");
+  }
   let req: RequestModel;
   try {
     req = await c.req.json<RequestModel>();

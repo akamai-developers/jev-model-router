@@ -24,11 +24,11 @@ export async function askOllama(
     stream: false,
   };
 
-  const res = await fetch(`${cfg.ollamaEndpoint}/api/chat`, {
+  const res = await fetch(`${cfg.llm.endpoint}/api/chat`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${cfg.ollamaApiKey}`,
+      Authorization: `Bearer ${cfg.llm.apiKey}`,
     },
     body: JSON.stringify(body),
   });
