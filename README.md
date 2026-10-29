@@ -19,7 +19,7 @@ The application is configured through Spin variables in [`spin.toml`](./spin.tom
 
 | Variable | Description |
 | -------- | ----------- |
-| `decition_model_api_key` | API key used to call Jev through OpenRouter (secret) |
+| `decision_model_api_key` | API key used to call Jev through OpenRouter (secret) |
 | `decision_model_endpoint` | OpenRouter base URL (default: `https://openrouter.ai`) |
 | `decision_model_name` | Decision Model name (default: `typesafe/jev-1.13`) |
 | `llm_endpoint` | Base URL of your Ollama instance |
@@ -37,7 +37,7 @@ Build and start the component locally, supplying the required secrets:
 
 ```bash
 spin up --build \
-  --variable decition_model_api_key="{your_openrouter_api_key}" \
+  --variable decision_model_api_key="{your_openrouter_api_key}" \
   --variable llm_endpoint="https://my-ollama:8080" \
   --variable llm_api_key="{your_ollama_api_key}"
 ```

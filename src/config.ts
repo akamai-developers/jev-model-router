@@ -28,7 +28,7 @@ function requireVariable(key: string): string {
 }
 
 export function loadConfig(): Config {
-  const decisionModelApiKey = requireVariable('decition_model_api_key');
+  const decisionModelApiKey = requireVariable('decision_model_api_key');
   const decisionModelEndpoint = requireVariable('decision_model_endpoint');
   const decisionModelName = requireVariable('decision_model_name');
   const llmNames = requireVariable('llm_names')

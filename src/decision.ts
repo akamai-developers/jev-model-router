@@ -5,9 +5,7 @@ export interface Decision {
   model: string;
 }
 
-function convertModelNamesToCriteria(
-  models: string[],
-): Record<string, string> {
+function convertModelNamesToCriteria(models: string[]): Record<string, string> {
   const criteria: Record<string, string> = {};
   for (const model of models) {
     criteria[model] = model;
@@ -15,10 +13,7 @@ function convertModelNamesToCriteria(
   return criteria;
 }
 
-export async function decideWhichModelToUse(
-  prompt: string,
-  cfg: Config,
-): Promise<Decision> {
+export async function decideWhichModelToUse( prompt: string, cfg: Config): Promise<Decision> {
   const client = new OpenRouter({
     apiKey: cfg.decisionModel.apiKey,
     serverURL: cfg.decisionModel.endpoint,

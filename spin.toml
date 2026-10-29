@@ -7,7 +7,7 @@ name = "jev-model-router"
 version = "0.1.0"
 
 [variables]
-decition_model_api_key = { required = true, secret = true }
+decision_model_api_key = { required = true, secret = true }
 decision_model_endpoint = { default = "https://openrouter.ai" }
 decision_model_name = { default = "typesafe/jev-1.13"}
 llm_names = { default = "gpt-4:latest,llama3.2:1b,qwen2.5-coder:7b,deepseek-v4-flash:cloud,deepseek-v3.2:cloud,qwen3.5:4b" }
@@ -25,7 +25,7 @@ exclude_files = ["**/node_modules"]
 allowed_outbound_hosts = ["{{ decision_model_endpoint }}", "{{ llm_endpoint }}"]
 
 [component.jev-model-router-ts.variables]
-decition_model_api_key = "{{ decition_model_api_key }}"
+decision_model_api_key = "{{ decision_model_api_key }}"
 decision_model_endpoint = "{{ decision_model_endpoint }}"
 decision_model_name = "{{ decision_model_name }}"
 llm_names = "{{ llm_names }}"

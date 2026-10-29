@@ -13,11 +13,7 @@ interface OllamaChatResponse {
   };
 }
 
-export async function askOllama(
-  prompt: string,
-  model: string,
-  cfg: Config,
-): Promise<string> {
+export async function askOllama(prompt: string, model: string, cfg: Config): Promise<string> {
   const body: OllamaChatRequest = {
     model,
     messages: [{ role: 'user', content: prompt }],
